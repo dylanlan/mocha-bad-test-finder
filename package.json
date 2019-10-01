@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "A CLI tool to find bad mocha tests in a directory",
   "main": "index.js",
+  "repository": "https://github.com/Dylanlan/mocha-bad-test-finder",
   "scripts": {
     "start": "node ./index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
