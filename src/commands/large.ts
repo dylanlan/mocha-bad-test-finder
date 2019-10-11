@@ -7,15 +7,15 @@ export default class Large extends Command {
 
     static examples = [
         `$ btf large --dir=/some/test/dir --lines=50 --top=20
-# outputs top 20 tests from the given directory that have at least 50 lines
+# outputs the 20 largest tests from the given directory that have at least 50 lines
 `,
     ]
 
     static flags = {
         help: flags.help({ char: 'h' }),
-        dir: flags.string({ char: 'd', description: 'directory containing tests to search' }),
+        dir: flags.string({ char: 'd', description: 'the directory containing tests to search' }),
         lines: flags.integer({ char: 'l', description: 'number of lines of test code that is too many' }),
-        top: flags.integer({ char: 'd', description: 'directory containing tests to search' }),
+        top: flags.integer({ char: 't', description: 'number of tests to find' }),
     }
 
     async run() {
@@ -25,7 +25,7 @@ export default class Large extends Command {
         const dir = flags.dir || '.'
         const top = flags.top || 20
 
-        this.log(`you input --dir: ${dir} --lines: ${lines} --top: ${top}`)
+        this.log(`Finding ${top} tests that have ${lines} lines in directory ${dir}`)
 
         const testFinder = new LargeTestFinder(dir, lines, top)
         const largeTests = testFinder.find()
