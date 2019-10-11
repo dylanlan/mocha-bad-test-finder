@@ -10,17 +10,21 @@ export class LargeTestFinder {
     numTests: number
 
     constructor(directory: string, numLines: number, numTests: number) {
+        // TODO: validate in constructor!
         this.directory = directory
         this.numLines = numLines
         this.numTests = numTests
     }
 
     find() {
+        let dir = this.directory
+        if (!isDirectory(dir)) {
+            // TODO: look at process.cwd(), process.env.INIT_CWD, $INIT_CWD
+            dir = path.join(process.cwd(), this.directory)
+        }
         validateInputs(this.directory, this.numLines, this.numTests)
 
-        // TODO: look at process.cwd(), process.env.INIT_CWD, $INIT_CWD
-
-        const fullDir = path.join(__dirname, this.directory)
+        const fullDir = dir
 
         const allTestFiles = getTestFiles(fullDir)
 
@@ -41,7 +45,12 @@ export class LargeTestFinder {
 }
 
 const isTestFile = (fileName: string) => {
-    return fileName && fileName.toLowerCase().endsWith('test.js') || fileName.toLowerCase().endsWith('spec.js')
+    if (!fileName) {
+        return false
+    }
+    const testFileSuffixes = ['test.js', 'spec.js', 'test.ts']
+    const lowerCase = fileName.toLowerCase()
+    return testFileSuffixes.some((suffix: string) => lowerCase.endsWith(suffix))
 }
 
 const isDirectory = (path: string) => {
@@ -61,12 +70,12 @@ const getTestFiles = (parentDirectory: string) => {
 }
 
 const isTestLine = (line: string) => {
-    const regex = /^\s*it\(/
+    const regex = /^\s*\.?it\(/
     return regex.test(line)
 }
 
 const isTestBlock = (line: string) => {
-    const regex = /^\s*(it|describe|beforeEach|afterEach)\(/
+    const regex = /^\s*(\.?it|\.?describe|\.?beforeEach|\.?afterEach)\(/
     return regex.test(line)
 }
 

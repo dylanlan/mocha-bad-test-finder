@@ -1,6 +1,6 @@
 import { Command, flags } from '@oclif/command'
 
-import { getLargeTests } from '../lib/large-test-finder'
+import { LargeTestFinder } from '../lib/large-test-finder'
 
 export default class Large extends Command {
     static description = 'Find mocha tests that have too many lines of code'
@@ -27,7 +27,8 @@ export default class Large extends Command {
 
         this.log(`you input --dir: ${dir} --lines: ${lines} --top: ${top}`)
 
-        const tests = getLargeTests(dir, lines, top)
-        this.log(tests)
+        const testFinder = new LargeTestFinder(dir, lines, top)
+        const largeTests = testFinder.find()
+        console.log(largeTests)
     }
 }
