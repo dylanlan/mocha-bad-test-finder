@@ -79,7 +79,8 @@ const isTestBlock = (line: string) => {
     return regex.test(line)
 }
 
-const findLargeTests = (testFile: string, lengths: LineLengths) => {
+// TODO: not any
+const findLargeTests = (testFile: string, lengths: any) => {
     const testText = fs.readFileSync(testFile).toString()
     if (!testText) {
         return
