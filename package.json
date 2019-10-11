@@ -42,7 +42,9 @@
   "keywords": [
     "oclif",
     "mocha",
-    "test"
+    "bad",
+    "test",
+    "finder"
   ],
   "license": "ISC",
   "main": "lib/index.js",
