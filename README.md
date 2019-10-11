@@ -36,6 +36,7 @@ USAGE
 <!-- commands -->
 * [`btf hello [FILE]`](#btf-hello-file)
 * [`btf help [COMMAND]`](#btf-help-command)
+* [`btf large [FILE]`](#btf-large-file)
 
 ## `btf hello [FILE]`
 
@@ -73,4 +74,20 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.1/src\commands\help.ts)_
+
+## `btf large [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ btf large [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src\commands\large.ts](https://github.com/Dylanlan/mocha-bad-test-finder/blob/v0.0.1/src\commands\large.ts)_
 <!-- commandsstop -->
