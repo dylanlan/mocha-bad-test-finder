@@ -25,7 +25,7 @@ $ npm install -g mocha-bad-test-finder
 $ btf COMMAND
 running command...
 $ btf (-v|--version|version)
-mocha-bad-test-finder/0.0.1 win32-x64 node-v10.14.0
+mocha-bad-test-finder/0.0.2 win32-x64 node-v10.14.0
 $ btf --help [COMMAND]
 USAGE
   $ btf COMMAND
@@ -35,7 +35,7 @@ USAGE
 # Commands
 <!-- commands -->
 * [`btf help [COMMAND]`](#btf-help-command)
-* [`btf large [FILE]`](#btf-large-file)
+* [`btf large`](#btf-large)
 
 ## `btf help [COMMAND]`
 
@@ -52,22 +52,26 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-_See code: [src\commands\help.ts](https://github.com/Dylanlan/mocha-bad-test-finder/blob/v0.0.1/src\commands\help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.1/src\commands\help.ts)_
 
 ## `btf large`
 
-Finds tests that have too many lines of code
+Find mocha tests that have too many lines of code
 
 ```
 USAGE
   $ btf large
 
 OPTIONS
-  -d, --dir        directory containing tests to search. Defaults to current directory
-  -l, --lines      number of lines in tests to find
-  -t, --top        find this many large tests
-  -h, --help       show CLI help
+  -d, --dir=dir      the directory containing tests to search
+  -h, --help         show CLI help
+  -l, --lines=lines  number of lines of test code that is too many
+  -t, --top=top      number of tests to find
+
+EXAMPLE
+  $ btf large --dir=/some/test/dir --lines=50 --top=20
+  # outputs the 20 largest tests from the given directory that have at least 50 lines
 ```
 
-_See code: [src\commands\large.ts](https://github.com/Dylanlan/mocha-bad-test-finder/blob/v0.0.1/src\commands\large.ts)_
+_See code: [src\commands\large.ts](https://github.com/Dylanlan/mocha-bad-test-finder/blob/v0.0.2/src\commands\large.ts)_
 <!-- commandsstop -->
