@@ -34,29 +34,8 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`btf hello [FILE]`](#btf-hello-file)
 * [`btf help [COMMAND]`](#btf-help-command)
 * [`btf large [FILE]`](#btf-large-file)
-
-## `btf hello [FILE]`
-
-describe the command here
-
-```
-USAGE
-  $ btf hello [FILE]
-
-OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
-
-EXAMPLE
-  $ btf hello
-  hello world from ./src/hello.ts!
-```
-
-_See code: [src\commands\hello.ts](https://github.com/Dylanlan/mocha-bad-test-finder/blob/v0.0.1/src\commands\hello.ts)_
 
 ## `btf help [COMMAND]`
 
@@ -73,20 +52,21 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.1/src\commands\help.ts)_
+_See code: [src\commands\help.ts](https://github.com/Dylanlan/mocha-bad-test-finder/blob/v0.0.1/src\commands\help.ts)_
 
-## `btf large [FILE]`
+## `btf large`
 
-describe the command here
+Finds tests that have too many lines of code
 
 ```
 USAGE
-  $ btf large [FILE]
+  $ btf large
 
 OPTIONS
-  -f, --force
+  -d, --dir        directory containing tests to search. Defaults to current directory
+  -l, --lines      number of lines in tests to find
+  -t, --top        find this many large tests
   -h, --help       show CLI help
-  -n, --name=name  name to print
 ```
 
 _See code: [src\commands\large.ts](https://github.com/Dylanlan/mocha-bad-test-finder/blob/v0.0.1/src\commands\large.ts)_
