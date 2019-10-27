@@ -1,117 +1,107 @@
 'use strict';
 
-const Mocha = require('mocha');
-const fs = require('fs');
-const path = require('path');
-const _ = require('lodash');
+const Mocha = require('mocha')
+const path = require('path')
+const _ = require('lodash')
+const utils = require('./utils')
 
 export class LargeTestFinder {
     directory: string
-    numLines: number
-    numTests: number
+    numRuns: number
 
-    constructor(directory: string, numLines: number, numTests: number) {
+    constructor(directory: string, numRuns: number) {
         // TODO: validate in constructor!
         this.directory = directory
-        this.numLines = numLines
-        this.numTests = numTests
+        this.numRuns = numRuns
     }
 
     find() {
         let dir = this.directory
-        if (!isDirectory(dir)) {
+        if (!utils.isDirectory(dir)) {
             // TODO: look at process.cwd(), process.env.INIT_CWD, $INIT_CWD
             dir = path.join(process.cwd(), this.directory)
         }
-        validateInputs(this.directory, this.numLines, this.numTests)
+        validateInputs(this.directory, this.numRuns)
 
         const fullDir = dir
 
-        const allTestFiles = getTestFiles(fullDir)
-
-        const lengths = {}
-        allTestFiles.forEach((file: string) => {
-            findLargeTests(file, lengths)
-        })
-
-        const testsWithManyLines = _.toPairs(lengths).filter((pair: any) => pair[1] >= this.numLines)
-        const topLargeTests = testsWithManyLines.slice(0, this.numTests)
-        const sorted = _.sortBy(topLargeTests, 1).reverse()
+        const flakyTests = findFlakyTests(fullDir, this.numRuns)
 
         return {
-            largeTests: sorted,
-            numTotalTests: testsWithManyLines.length
+            flakyTests
         }
     }
 }
 
-const resetTests = (mocha, allTestFiles) => {
-    mocha.suite.suites = [];
+const resetTests = (mocha: any, allTestFiles: Array<string>) => {
+    mocha.suite.suites = []
     allTestFiles.forEach(file => {
-        delete require.cache[require.resolve(path.join(__dirname, file))];
-    });
-};
+        delete require.cache[require.resolve(path.join(__dirname, file))]
+    })
+}
 
-const runTests = (allTestFiles, currentRun, totalRuns, testFailures = {}) => {
+const runTests = (allTestFiles: Array<string>, currentRun: number, totalRuns: number, testFailures: any = {}) => {
     return new Promise((resolve, reject) => {
-        let numRunFailures = 0;
+        let numRunFailures = 0
 
         const mocha = new Mocha({
-            reporter: function () {
+            reporter: () => {
                 //avoid logs
             },
-        });
-        
-        allTestFiles.forEach(function(file) {
-            mocha.addFile(file);
-        });
+        })
+
+        allTestFiles.forEach(file => {
+            mocha.addFile(file)
+        })
 
         if (currentRun > 0) {
-            resetTests(mocha, allTestFiles);
+            resetTests(mocha, allTestFiles)
         } else {
-            console.log(`Starting ${totalRuns} test runs...`);
+            console.log(`Starting ${totalRuns} test runs...`)
         }
 
         return mocha.run()
-            .on('fail', function(test, err) {
-                const testKey = `${test.file} - ${test.title}`;
-                const numFailures = _.get(testFailures, [testKey, 'numFailures'], 0);
+            .on('fail', (test: any) => {
+                const testKey = `${test.file} - ${test.title}`
+                const numFailures = _.get(testFailures, [testKey, 'numFailures'], 0)
                 const testValue = {
                     test,
                     numFailures: numFailures + 1
-                };
-                testFailures[testKey] = testValue;
-                numRunFailures++;
+                }
+                testFailures[testKey] = testValue
+                numRunFailures++
             })
-            .on('end', function() {
-                currentRun++;
+            .on('end', () => {
+                currentRun++
                 if (numRunFailures > 0) {
-                    console.log(`Finished run ${currentRun}, number of test failures: ${numRunFailures}`);
+                    console.log(`Finished run ${currentRun}, number of test failures: ${numRunFailures}`)
                 }
 
                 if (currentRun < totalRuns) {
-                    resolve(runTests(allTestFiles, currentRun, totalRuns, testFailures));
+                    resolve(runTests(allTestFiles, currentRun, totalRuns, testFailures))
                 } else {
-                    resolve(testFailures);
+                    resolve(testFailures)
                 }
-            });
-    });
-};
+            })
+            .on('error', (error) => {
+                console.error(`Error while running tests`)
+                console.error(error)
+                reject(error)
+            })
+    })
+}
 
-const validateInputs = (testDir, totalRuns) => {
-    if (!isDirectory(testDir)) {
-        // TODO: throw error instead of process exit
-        console.error(`${testDir} is not a directory`);
-        process.exit(1);
+const validateInputs = (testDir: string, totalRuns: number) => {
+    if (!utils.isDirectory(testDir)) {
+        throw new Error(`${testDir} is not a directory`)
     }
 
     if (totalRuns < 0) {
-        console.error(`Number of runs (${totalRuns}) cannot be negative`);
-        process.exit(1);
+        throw new Error(`Number of runs (${totalRuns}) cannot be negative`)
     }
-};
+}
 
-exports.findFlakyTests = (testDir, totalRuns) => {
-    const allTestFiles = getTestFiles(testDir);
-    return runTests(allTestFiles, 0, totalRuns);
-};
+const findFlakyTests = (testDir: string, totalRuns: number) => {
+    const allTestFiles = utils.getTestFiles(testDir)
+    return runTests(allTestFiles, 0, totalRuns)
+}
