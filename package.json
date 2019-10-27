@@ -58,6 +58,8 @@
   },
   "repository": "https://github.com/Dylanlan/mocha-bad-test-finder",
   "scripts": {
+    "manifest": "rimraf oclif.manifest.json && oclif-dev manifest",
+    "readme": "oclif-dev readme",
     "postpack": "rimraf oclif.manifest.json",
     "posttest": "tslint -p test -t stylish",
     "prepack": "rimraf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
