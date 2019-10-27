@@ -3,6 +3,7 @@
 const fs = require('fs')
 const path = require('path')
 const _ = require('lodash')
+const utils = require('./utils')
 
 export class LargeTestFinder {
     directory: string
@@ -18,7 +19,7 @@ export class LargeTestFinder {
 
     find() {
         let dir = this.directory
-        if (!isDirectory(dir)) {
+        if (!utils.isDirectory(dir)) {
             // TODO: look at process.cwd(), process.env.INIT_CWD, $INIT_CWD
             dir = path.join(process.cwd(), this.directory)
         }
@@ -26,7 +27,7 @@ export class LargeTestFinder {
 
         const fullDir = dir
 
-        const allTestFiles = getTestFiles(fullDir)
+        const allTestFiles = utils.getTestFiles(fullDir)
 
         const lengths = {}
         allTestFiles.forEach((file: string) => {
@@ -42,41 +43,6 @@ export class LargeTestFinder {
             numTotalTests: testsWithManyLines.length
         }
     }
-}
-
-const isTestFile = (fileName: string) => {
-    if (!fileName) {
-        return false
-    }
-    const testFileSuffixes = ['test.js', 'spec.js', 'test.ts']
-    const lowerCase = fileName.toLowerCase()
-    return testFileSuffixes.some((suffix: string) => lowerCase.endsWith(suffix))
-}
-
-const isDirectory = (path: string) => {
-    return fs.existsSync(path) && fs.lstatSync(path).isDirectory()
-}
-
-const getTestFiles = (parentDirectory: string) => {
-    const files = fs.readdirSync(parentDirectory)
-    let testFiles = files.filter((f: string) => isTestFile(f)).map((f: string) => path.join(parentDirectory, f))
-    const directories = files.filter((f: string) => isDirectory(path.join(parentDirectory, f)) && !f.startsWith('.') && f !== 'node_modules')
-    directories.forEach((dir: string) => {
-        const subFiles = getTestFiles(path.join(parentDirectory, dir))
-        testFiles = testFiles.concat(subFiles)
-    })
-
-    return testFiles
-}
-
-const isTestLine = (line: string) => {
-    const regex = /^\s*\.?it\(/
-    return regex.test(line)
-}
-
-const isTestBlock = (line: string) => {
-    const regex = /^\s*(\.?it|\.?describe|\.?beforeEach|\.?afterEach)\(/
-    return regex.test(line)
 }
 
 // TODO: not any
@@ -99,8 +65,8 @@ const findLargeTests = (testFile: string, lengths: any) => {
         const line = lines[i]
         const lineNumber = i + 1
         fileLine = `${testFile}:${lineNumber} - ${line.trim()}`.trim()
-        const isTest = isTestLine(line)
-        const isBlock = isTestBlock(line)
+        const isTest = utils.isTestLine(line)
+        const isBlock = utils.isTestBlock(line)
 
         if (!isBlock) {
             if (currentTest) {
@@ -131,7 +97,7 @@ const findLargeTests = (testFile: string, lengths: any) => {
 }
 
 const validateInputs = (dir: string, lines: number, numTests: number) => {
-    if (!isDirectory(dir)) {
+    if (!utils.isDirectory(dir)) {
         throw new Error(`${dir} is not a directory`)
     }
 
