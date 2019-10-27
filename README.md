@@ -1,4 +1,4 @@
-mocha-bad-test-finder
+mocha-bad-test-finder (btf)
 =====================
 
 Do you have some annoying tests?
@@ -34,8 +34,25 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
+* [`btf flaky [FILE]`](#btf-flaky-file)
 * [`btf help [COMMAND]`](#btf-help-command)
 * [`btf large`](#btf-large)
+
+## `btf flaky [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ btf flaky [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src\commands\flaky.ts](https://github.com/Dylanlan/mocha-bad-test-finder/blob/v0.0.2/src\commands\flaky.ts)_
 
 ## `btf help [COMMAND]`
 
