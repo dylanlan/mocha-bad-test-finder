@@ -5,7 +5,7 @@ const path = require('path')
 const _ = require('lodash')
 const utils = require('./utils')
 
-export class LargeTestFinder {
+export class FlakyTestFinder {
     directory: string
     numRuns: number
 
@@ -15,17 +15,15 @@ export class LargeTestFinder {
         this.numRuns = numRuns
     }
 
-    find() {
+    async find() {
+        validateInputs(this.directory, this.numRuns)
         let dir = this.directory
         if (!utils.isDirectory(dir)) {
-            // TODO: look at process.cwd(), process.env.INIT_CWD, $INIT_CWD
+            // TODO: compare process.cwd(), process.env.INIT_CWD, $INIT_CWD
             dir = path.join(process.cwd(), this.directory)
         }
-        validateInputs(this.directory, this.numRuns)
 
-        const fullDir = dir
-
-        const flakyTests = findFlakyTests(fullDir, this.numRuns)
+        const flakyTests = await findFlakyTests(dir, this.numRuns)
 
         return {
             flakyTests
@@ -36,18 +34,20 @@ export class LargeTestFinder {
 const resetTests = (mocha: any, allTestFiles: Array<string>) => {
     mocha.suite.suites = []
     allTestFiles.forEach(file => {
-        delete require.cache[require.resolve(path.join(__dirname, file))]
+        const testPath = require.resolve(path.join(process.cwd(), file))
+        delete require.cache[testPath]
     })
 }
 
 const runTests = (allTestFiles: Array<string>, currentRun: number, totalRuns: number, testFailures: any = {}) => {
+    console.log('running tests')
     return new Promise((resolve, reject) => {
         let numRunFailures = 0
-
         const mocha = new Mocha({
-            reporter: () => {
-                //avoid logs
-            },
+            // tslint:disable-next-line:object-literal-shorthand
+            reporter: function () {
+                //empty to prevent test output
+            }
         })
 
         allTestFiles.forEach(file => {
@@ -56,8 +56,6 @@ const runTests = (allTestFiles: Array<string>, currentRun: number, totalRuns: nu
 
         if (currentRun > 0) {
             resetTests(mocha, allTestFiles)
-        } else {
-            console.log(`Starting ${totalRuns} test runs...`)
         }
 
         return mocha.run()
@@ -71,22 +69,25 @@ const runTests = (allTestFiles: Array<string>, currentRun: number, totalRuns: nu
                 testFailures[testKey] = testValue
                 numRunFailures++
             })
-            .on('end', () => {
+            .on('end', async () => {
                 currentRun++
                 if (numRunFailures > 0) {
                     console.log(`Finished run ${currentRun}, number of test failures: ${numRunFailures}`)
                 }
 
                 if (currentRun < totalRuns) {
-                    resolve(runTests(allTestFiles, currentRun, totalRuns, testFailures))
+                    console.log('trying to run another test')
+                    const result = await runTests(allTestFiles, currentRun, totalRuns, testFailures)
+                    return resolve(result)
                 } else {
-                    resolve(testFailures)
+                    console.log('finished last test')
+                    return resolve(testFailures)
                 }
             })
-            .on('error', (error) => {
-                console.error(`Error while running tests`)
+            .on('error', (error: Error) => {
+                console.error('Error while running tests')
                 console.error(error)
-                reject(error)
+                return reject(error)
             })
     })
 }
@@ -101,7 +102,7 @@ const validateInputs = (testDir: string, totalRuns: number) => {
     }
 }
 
-const findFlakyTests = (testDir: string, totalRuns: number) => {
+const findFlakyTests = async (testDir: string, totalRuns: number) => {
     const allTestFiles = utils.getTestFiles(testDir)
     return runTests(allTestFiles, 0, totalRuns)
 }
