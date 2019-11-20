@@ -31,15 +31,15 @@ export default class Flaky extends Command {
 
         this.log(`Starting ${runs} test runs...`)
         const testFailures = await testFinder.find()
-        console.log('Finished all runs!')
+        this.log('Finished all runs!')
         if (Object.keys(testFailures).length) {
-            console.log('Tests that failed:')
-            _.each(testFailures, (value, key) => {
-                console.log(`${key}, failures: ${value.numFailures}`)
+            this.log('Tests that failed:')
+            _.each(testFailures, (value: { numFailures: number }, key: string) => {
+                this.log(`${key}, failures: ${value.numFailures}`)
             });
         } else {
-            console.log('No failures!')
+            this.log('No failures!')
         }
-        console.log('\n')
+        this.log('\n')
     }
 }
