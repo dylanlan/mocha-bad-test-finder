@@ -7,6 +7,15 @@
     "btf": "./bin/run"
   },
   "bugs": "https://github.com/Dylanlan/mocha-bad-test-finder/issues",
+  "scripts": {
+    "manifest": "rimraf oclif.manifest.json && oclif-dev manifest",
+    "readme": "oclif-dev readme",
+    "postpack": "rimraf oclif.manifest.json",
+    "posttest": "tslint -p test -t stylish",
+    "prepack": "rimraf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
+    "test": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
+    "version": "oclif-dev readme && git add README.md"
+  },
   "dependencies": {
     "@oclif/command": "~1.5.19",
     "@oclif/config": "~1.13.3",
@@ -60,14 +69,5 @@
     ]
   },
   "repository": "https://github.com/Dylanlan/mocha-bad-test-finder",
-  "scripts": {
-    "manifest": "rimraf oclif.manifest.json && oclif-dev manifest",
-    "readme": "oclif-dev readme",
-    "postpack": "rimraf oclif.manifest.json",
-    "posttest": "tslint -p test -t stylish",
-    "prepack": "rimraf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
-    "test": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
-    "version": "oclif-dev readme && git add README.md"
-  },
   "types": "lib/index.d.ts"
 }
