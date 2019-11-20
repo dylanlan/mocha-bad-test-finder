@@ -1,17 +1,9 @@
-import {expect, test} from '@oclif/test'
+import { expect, test } from '@oclif/test'
+const Chance = require('chance')
+const chance = new Chance();
 
 describe('flaky', () => {
-  test
-    .stdout()
-    .command(['flaky'])
-    .it('runs hello', ctx => {
-      expect(ctx.stdout).to.contain('hello world')
-    })
-
-  test
-    .stdout()
-    .command(['flaky', '--name', 'jeff'])
-    .it('runs hello --name jeff', ctx => {
-      expect(ctx.stdout).to.contain('hello jeff')
+    it('should sometimes fail', function () {
+        expect(chance.natural({min: 1, max: 100})).to.be.lessThan(100)
     })
 })

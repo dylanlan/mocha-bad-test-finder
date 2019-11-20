@@ -2,6 +2,8 @@ import { Command, flags } from '@oclif/command'
 
 import { FlakyTestFinder } from '../lib/flaky-test-finder'
 
+const _ = require('lodash')
+
 export default class Flaky extends Command {
     static description = 'Find mocha tests that sometimes fail'
 
@@ -23,12 +25,21 @@ export default class Flaky extends Command {
         const dir = flags.dir || '.'
         const runs = flags.runs || 20
 
-        this.log(`Finding tests that have fail from ${runs} in directory ${dir}`)
+        this.log(`Finding tests that fail from ${runs} runs in directory "${dir}"`)
 
         const testFinder = new FlakyTestFinder(dir, runs)
 
         this.log(`Starting ${runs} test runs...`)
-        const flakyTests = await testFinder.find()
-        console.log(flakyTests)
+        const testFailures = await testFinder.find()
+        console.log('Finished all runs!')
+        if (Object.keys(testFailures).length) {
+            console.log('Tests that failed:')
+            _.each(testFailures, (value, key) => {
+                console.log(`${key}, failures: ${value.numFailures}`)
+            });
+        } else {
+            console.log('No failures!')
+        }
+        console.log('\n')
     }
 }

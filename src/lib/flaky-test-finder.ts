@@ -23,11 +23,7 @@ export class FlakyTestFinder {
             dir = path.join(process.cwd(), this.directory)
         }
 
-        const flakyTests = await findFlakyTests(dir, this.numRuns)
-
-        return {
-            flakyTests
-        }
+        return findFlakyTests(dir, this.numRuns)
     }
 }
 
@@ -40,7 +36,6 @@ const resetTests = (mocha: any, allTestFiles: Array<string>) => {
 }
 
 const runTests = (allTestFiles: Array<string>, currentRun: number, totalRuns: number, testFailures: any = {}) => {
-    console.log('running tests')
     return new Promise((resolve, reject) => {
         let numRunFailures = 0
         const mocha = new Mocha({
@@ -69,18 +64,15 @@ const runTests = (allTestFiles: Array<string>, currentRun: number, totalRuns: nu
                 testFailures[testKey] = testValue
                 numRunFailures++
             })
-            .on('end', async () => {
+            .on('end', () => {
                 currentRun++
                 if (numRunFailures > 0) {
                     console.log(`Finished run ${currentRun}, number of test failures: ${numRunFailures}`)
                 }
 
                 if (currentRun < totalRuns) {
-                    console.log('trying to run another test')
-                    const result = await runTests(allTestFiles, currentRun, totalRuns, testFailures)
-                    return resolve(result)
+                    return resolve(runTests(allTestFiles, currentRun, totalRuns, testFailures))
                 } else {
-                    console.log('finished last test')
                     return resolve(testFailures)
                 }
             })
