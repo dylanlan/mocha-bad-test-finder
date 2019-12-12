@@ -1,8 +1,7 @@
 import { Command, flags } from '@oclif/command'
+import _ from 'lodash'
 
 import { FlakyTestFinder } from '../lib/flaky-test-finder'
-
-const _ = require('lodash')
 
 export default class Flaky extends Command {
     static description = 'Find mocha tests that sometimes fail'
@@ -30,13 +29,13 @@ export default class Flaky extends Command {
         const testFinder = new FlakyTestFinder(dir, runs)
 
         this.log(`Starting ${runs} test runs...`)
-        const testFailures = await testFinder.find()
+        const testFailures: any = await testFinder.find()
         this.log('Finished all runs!')
         if (Object.keys(testFailures).length) {
             this.log('Tests that failed:')
             _.each(testFailures, (value: { numFailures: number }, key: string) => {
                 this.log(`${key}, failures: ${value.numFailures}`)
-            });
+            })
         } else {
             this.log('No failures!')
         }

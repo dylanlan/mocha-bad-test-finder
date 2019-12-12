@@ -1,9 +1,8 @@
-'use strict'
+import * as fs from 'fs'
+import _ from 'lodash'
+import * as path from 'path'
 
-const fs = require('fs')
-const path = require('path')
-const _ = require('lodash')
-const utils = require('./utils')
+import * as utils from './utils'
 
 export class LargeTestFinder {
     directory: string

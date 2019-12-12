@@ -1,9 +1,8 @@
-'use strict';
+import _ from 'lodash'
+import Mocha from 'mocha'
+import * as path from 'path'
 
-const Mocha = require('mocha')
-const path = require('path')
-const _ = require('lodash')
-const utils = require('./utils')
+import * as utils from './utils'
 
 export class FlakyTestFinder {
     directory: string
@@ -38,12 +37,13 @@ const resetTests = (mocha: any, allTestFiles: Array<string>) => {
 const runTests = (allTestFiles: Array<string>, currentRun: number, totalRuns: number, testFailures: any = {}) => {
     return new Promise((resolve, reject) => {
         let numRunFailures = 0
-        const mocha = new Mocha({
+        const options: any = {
             // tslint:disable-next-line:object-literal-shorthand
             reporter: function () {
                 //empty to prevent test output
             }
-        })
+        }
+        const mocha = new Mocha(options)
 
         allTestFiles.forEach(file => {
             mocha.addFile(file)
