@@ -25,7 +25,7 @@ $ npm install -g mocha-bad-test-finder
 $ btf COMMAND
 running command...
 $ btf (-v|--version|version)
-mocha-bad-test-finder/0.0.2 win32-x64 node-v10.17.0
+mocha-bad-test-finder/0.0.3 win32-x64 node-v10.17.0
 $ btf --help [COMMAND]
 USAGE
   $ btf COMMAND
@@ -58,7 +58,7 @@ EXAMPLE
   # outputs any tests which failed from 10 runs
 ```
 
-_See code: [src\commands\flaky.ts](https://github.com/Dylanlan/mocha-bad-test-finder/blob/v0.0.2/src\commands\flaky.ts)_
+_See code: [src\commands\flaky.ts](https://github.com/Dylanlan/mocha-bad-test-finder/blob/v0.0.3/src\commands\flaky.ts)_
 
 ## `btf help [COMMAND]`
 
@@ -79,7 +79,7 @@ _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.3
 
 ## `btf interactive`
 
-Find tests that interact with each other
+Find tests that interact with each other (not implemented yet)
 
 ```
 USAGE
@@ -94,7 +94,7 @@ EXAMPLE
   # outputs tests from the given directory which failed either when run individually or all together
 ```
 
-_See code: [src\commands\interactive.ts](https://github.com/Dylanlan/mocha-bad-test-finder/blob/v0.0.2/src\commands\interactive.ts)_
+_See code: [src\commands\interactive.ts](https://github.com/Dylanlan/mocha-bad-test-finder/blob/v0.0.3/src\commands\interactive.ts)_
 
 ## `btf large`
 
@@ -115,11 +115,11 @@ EXAMPLE
   # outputs the 20 largest tests from the given directory that have at least 50 lines
 ```
 
-_See code: [src\commands\large.ts](https://github.com/Dylanlan/mocha-bad-test-finder/blob/v0.0.2/src\commands\large.ts)_
+_See code: [src\commands\large.ts](https://github.com/Dylanlan/mocha-bad-test-finder/blob/v0.0.3/src\commands\large.ts)_
 
 ## `btf slow`
 
-Find tests that take a long time to execute
+Find tests that take a long time to execute (not implemented yet)
 
 ```
 USAGE
@@ -136,5 +136,5 @@ EXAMPLE
   # outputs the 20 slowest tests from the given directory that take at least 500 milliseconds
 ```
 
-_See code: [src\commands\slow.ts](https://github.com/Dylanlan/mocha-bad-test-finder/blob/v0.0.2/src\commands\slow.ts)_
+_See code: [src\commands\slow.ts](https://github.com/Dylanlan/mocha-bad-test-finder/blob/v0.0.3/src\commands\slow.ts)_
 <!-- commandsstop -->
