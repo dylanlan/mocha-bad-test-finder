@@ -4,7 +4,7 @@ describe('flaky', () => {
     test
         .stdout()
         .command(['flaky'])
-        .it('runs hello', ctx => {
+        .it('runs flaky', ctx => {
             expect(true).to.be.true
         })
 })

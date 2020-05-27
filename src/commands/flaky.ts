@@ -4,7 +4,7 @@ import _ from 'lodash'
 import { FlakyTestFinder } from '../lib/flaky-test-finder'
 
 export default class Flaky extends Command {
-    static description = 'Find mocha tests that sometimes fail'
+    static description = 'Find tests that sometimes fail'
 
     static examples = [
         `$ btf flaky --dir=/some/test/dir --runs=10

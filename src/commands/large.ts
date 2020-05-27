@@ -3,7 +3,7 @@ import { Command, flags } from '@oclif/command'
 import { LargeTestFinder } from '../lib/large-test-finder'
 
 export default class Large extends Command {
-    static description = 'Find mocha tests that have too many lines of code'
+    static description = 'Find tests that have too many lines of code'
 
     static examples = [
         `$ btf large --dir=/some/test/dir --lines=50 --top=20

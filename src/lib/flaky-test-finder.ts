@@ -34,7 +34,7 @@ const resetTests = (mocha: any, allTestFiles: Array<string>) => {
     })
 }
 
-const runTests = (allTestFiles: Array<string>, currentRun: number, totalRuns: number, testFailures: any = {}) => {
+const runTests = (allTestFiles: Array<string>, currentRun: number, totalRuns: number, testFailures: any = {}): any => {
     return new Promise((resolve, reject) => {
         let numRunFailures = 0
         const options: any = {
