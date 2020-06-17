@@ -1,10 +1,10 @@
-import { expect, test } from '@oclif/test'
+import { expect, test } from '@oclif/test';
 
 describe('slow', () => {
     test
         .stdout()
         .command(['slow'])
-        .it('runs slow', ctx => {
-            expect(true).to.be.true
-        })
-})
+        .it('runs slow', (context) => {
+            expect(true).to.be.true;
+        });
+});
