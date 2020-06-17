@@ -12,6 +12,8 @@
     "noImplicitAny": true
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "test/**/*",
+    ".eslintrc.js"
   ]
 }

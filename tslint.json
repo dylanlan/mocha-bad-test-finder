@@ -1,8 +1,0 @@
-{
-  "extends": "@oclif/tslint",
-  "rules": {
-    "no-unexpected-multiline": "error",
-    "ter-indent": "4",
-    "object-curly-spacing": true
-  }
-}
