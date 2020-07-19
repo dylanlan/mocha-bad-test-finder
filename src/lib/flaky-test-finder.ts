@@ -35,7 +35,12 @@ const resetTests = (mocha: any, allTestFiles: Array<string>) => {
     });
 };
 
-const runTests = (allTestFiles: Array<string>, currentRun: number, totalRuns: number, testFailures: any = {}): any => new Promise((resolve, reject) => {
+const runTests = (
+    allTestFiles: Array<string>,
+    currentRun: number,
+    totalRuns: number,
+    testFailures: any = {},
+): any => new Promise((resolve, reject) => {
         let numberRunFailures = 0;
         const options: any = {
             // tslint:disable-next-line:object-literal-shorthand
@@ -62,10 +67,10 @@ const runTests = (allTestFiles: Array<string>, currentRun: number, totalRuns: nu
                     numFailures: numberFailures + 1,
                 };
                 testFailures[testKey] = testValue;
-                numberRunFailures++;
+                numberRunFailures += 1;
             })
             .on('end', () => {
-                currentRun++;
+                currentRun += 1;
                 if (numberRunFailures > 0) {
                     console.log(`Finished run ${currentRun}, number of test failures: ${numberRunFailures}`);
                 }
@@ -82,7 +87,7 @@ const runTests = (allTestFiles: Array<string>, currentRun: number, totalRuns: nu
             });
     });
 
-const validateInputs = (testDirectory, totalRuns: number) => {
+const validateInputs = (testDirectory: string, totalRuns: number) => {
     if (!utils.isDirectory(testDirectory)) {
         throw new Error(`${testDirectory} is not a directory`);
     }
@@ -92,7 +97,7 @@ const validateInputs = (testDirectory, totalRuns: number) => {
     }
 };
 
-const findFlakyTests = async (testDirectory, totalRuns: number) => {
+const findFlakyTests = async (testDirectory: string, totalRuns: number) => {
     const allTestFiles = utils.getTestFiles(testDirectory);
     return runTests(allTestFiles, 0, totalRuns);
 };

@@ -4,7 +4,7 @@ describe('large', () => {
     test
         .stdout()
         .command(['large'])
-        .it('runs large', (context) => {
+        .it('runs large', () => {
             expect(true).to.be.true;
         });
 });

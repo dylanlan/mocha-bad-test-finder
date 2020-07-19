@@ -15,9 +15,9 @@ export default class Interactive extends Command {
     };
 
     async run() {
-        const { flags } = this.parse(Interactive);
+        const { flags: { dir } } = this.parse(Interactive);
 
-        const directory = flags.dir || '.';
+        const directory = dir || '.';
 
         this.log(`Finding tests that interact with each other in ${directory}`);
         // TODO: implement

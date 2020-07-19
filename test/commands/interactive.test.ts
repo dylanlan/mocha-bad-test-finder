@@ -4,7 +4,7 @@ describe('interactive', () => {
     test
         .stdout()
         .command(['interactive'])
-        .it('runs interactive', (context) => {
+        .it('runs interactive', () => {
             expect(true).to.be.true;
         });
 });

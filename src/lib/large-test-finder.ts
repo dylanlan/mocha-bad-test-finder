@@ -54,7 +54,7 @@ const findLargeTests = (testFile: string, lengths: any) => {
     }
 
     const lines = testText.split('\n');
-    if (!lines || !lines.length) {
+    if (!lines || lines.length <= 0) {
         return;
     }
 
@@ -62,7 +62,7 @@ const findLargeTests = (testFile: string, lengths: any) => {
     let testLength = 0;
     let currentTest = '';
     let fileLine;
-    for (let i = 0; i < numberLines; i++) {
+    for (let i = 0; i < numberLines; i += 1) {
         const line = lines[i];
         const lineNumber = i + 1;
         fileLine = `${testFile}:${lineNumber} - ${line.trim()}`.trim();
@@ -72,7 +72,7 @@ const findLargeTests = (testFile: string, lengths: any) => {
         if (!isBlock) {
             if (currentTest) {
                 // if found regular code, and we're in a test, increment line count
-                testLength++;
+                testLength += 1;
             }
         } else {
             if (currentTest) {
@@ -97,7 +97,7 @@ const findLargeTests = (testFile: string, lengths: any) => {
     }
 };
 
-const validateInputs = (directory, lines: number, numberTests) => {
+const validateInputs = (directory: string, lines: number, numberTests: number) => {
     if (!utils.isDirectory(directory)) {
         throw new Error(`${directory} is not a directory`);
     }

@@ -19,19 +19,19 @@ export default class Flaky extends Command {
     };
 
     async run() {
-        const { flags } = this.parse(Flaky);
+        const { flags: { dir, runs } } = this.parse(Flaky);
 
-        const directory = flags.dir || '.';
-        const runs = flags.runs || 20;
+        const directory = dir || '.';
+        const numRuns = runs || 20;
 
-        this.log(`Finding tests that fail from ${runs} runs in directory "${directory}"`);
+        this.log(`Finding tests that fail from ${numRuns} runs in directory "${directory}"`);
 
-        const testFinder = new FlakyTestFinder(directory, runs);
+        const testFinder = new FlakyTestFinder(directory, numRuns);
 
-        this.log(`Starting ${runs} test runs...`);
+        this.log(`Starting ${numRuns} test runs...`);
         const testFailures: any = await testFinder.find();
         this.log('Finished all runs!');
-        if (Object.keys(testFailures).length) {
+        if (Object.keys(testFailures).length > 0) {
             this.log('Tests that failed:');
             _.each(testFailures, (value: { numFailures: number }, key: string) => {
                 this.log(`${key}, failures: ${value.numFailures}`);

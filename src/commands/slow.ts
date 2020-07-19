@@ -17,13 +17,13 @@ export default class Slow extends Command {
     };
 
     async run() {
-        const { flags } = this.parse(Slow);
+        const { flags: { dir, milliSeconds, top } } = this.parse(Slow);
 
-        const milliSeconds = flags.milliSeconds || 500;
-        const directory = flags.dir || '.';
-        const top = flags.top || 20;
+        const ms = milliSeconds || 500;
+        const directory = dir || '.';
+        const numTests = top || 20;
 
-        this.log(`Finding ${top} tests that take at least ${milliSeconds}ms to execute in directory ${directory}`);
+        this.log(`Finding ${numTests} tests that take at least ${ms}ms to execute in directory ${directory}`);
         // TODO: implement
     }
 }

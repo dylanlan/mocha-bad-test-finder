@@ -19,15 +19,15 @@ export default class Large extends Command {
     };
 
     async run() {
-        const { flags } = this.parse(Large);
+        const { flags: { lines, dir, top } } = this.parse(Large);
 
-        const lines = flags.lines || 20;
-        const directory = flags.dir || '.';
-        const top = flags.top || 20;
+        const numLines = lines || 20;
+        const directory = dir || '.';
+        const numTests = top || 20;
 
-        this.log(`Finding ${top} tests that have ${lines} lines in directory ${directory}`);
+        this.log(`Finding ${top} tests that have ${numLines} lines in directory ${directory}`);
 
-        const testFinder = new LargeTestFinder(directory, lines, top);
+        const testFinder = new LargeTestFinder(directory, numLines, numTests);
         const largeTests = testFinder.find();
         console.log(largeTests);
     }
