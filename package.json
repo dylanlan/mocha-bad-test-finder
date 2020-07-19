@@ -1,7 +1,7 @@
 {
   "name": "mocha-bad-test-finder",
   "description": "A CLI to help find bad mocha tests that could be improved",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Dylan Stankievech @Dylanlan",
   "bin": {
     "btf": "./bin/run"
