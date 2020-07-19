@@ -9,7 +9,7 @@ export class FlakyTestFinder {
 
     numRuns: number;
 
-    constructor(directory: string, numberRuns) {
+    constructor(directory: string, numberRuns: number) {
         // TODO: validate in constructor!
         this.directory = directory;
         this.numRuns = numberRuns;

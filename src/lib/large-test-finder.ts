@@ -11,7 +11,7 @@ export class LargeTestFinder {
 
     numTests: number;
 
-    constructor(directory: string, numberLines, numberTests) {
+    constructor(directory: string, numberLines: number, numberTests: number) {
         // TODO: validate in constructor!
         this.directory = directory;
         this.numLines = numberLines;
