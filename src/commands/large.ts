@@ -25,7 +25,7 @@ export default class Large extends Command {
         const directory = dir || '.';
         const numTests = top || 20;
 
-        this.log(`Finding ${top} tests that have ${numLines} lines in directory ${directory}`);
+        this.log(`Finding ${numTests} tests that have ${numLines} lines in directory ${directory}`);
 
         const testFinder = new LargeTestFinder(directory, numLines, numTests);
         const largeTests = testFinder.find();
