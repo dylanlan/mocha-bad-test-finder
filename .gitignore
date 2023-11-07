@@ -5,3 +5,12 @@
 /lib
 /tmp
 node_modules
+
+# Yarn v2+
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

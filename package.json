@@ -78,5 +78,6 @@
     ]
   },
   "repository": "https://github.com/Dylanlan/mocha-bad-test-finder",
-  "types": "lib/index.d.ts"
+  "types": "lib/index.d.ts",
+  "packageManager": "yarn@4.0.1"
 }
